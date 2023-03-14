@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/go/src/github.com/patrickodacre/go-2
