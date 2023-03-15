@@ -1,7 +1,31 @@
-CREATE TABLE IF NOT EXISTS `users`
+CREATE TABLE IF NOT EXISTS users
 (
 	id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	name varchar(255) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+ALTER TABLE users
+	MODIFY id INT UNSIGNED AUTO_INCREMENT,
+	MODIFY name varchar(100) NOT NULL;
+
+## Inserts
+INSERT INTO users(name, created_at, updated_at)
+	VALUES ("Boo", NOW(), NOW()),
+	("Evan", NOW(), NOW()),
+	("Christian", NOW(), NOW()),
+	("Daniel", NOW(), NOW()),
+	("Tigger", NOW(), NOW());
+
+
+CREATE TABLE IF NOT EXISTS projects
+(
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	name varchar(100),
+	owner_id INT UNSIGNED NOT NULL,
+		FOREIGN KEY (owner_id)
+			REFERENCES users (id)
+			ON DELETE RESTRICT
+			ON UPDATE RESTRICT
 );
