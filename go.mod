@@ -1,3 +1,5 @@
-module github.com/patrickodacre/go-2
+module github.com/patrickodacre/go-dev
 
 go 1.20
+
+require github.com/go-sql-driver/mysql v1.7.0 // indirect

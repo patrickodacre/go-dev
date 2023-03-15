@@ -1,9 +1,12 @@
 FROM golang:1.20
 
-WORKDIR /go/src/github.com/patrickodacre/go-2
+WORKDIR /go/src/github.com/patrickodacre/go-dev
 
-COPY . .
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
 
 RUN go install -mod=mod github.com/githubnemo/CompileDaemon
 
-ENTRYPOINT CompileDaemon -log-prefix=false -polling=true -build="go build -o main ./cmd/main.go" -command="./main"
+# todo:: can this be done better so as to reduce the size of this container?
+COPY . .
+

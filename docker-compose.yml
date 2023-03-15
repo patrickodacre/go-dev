@@ -1,9 +1,44 @@
 services:
   app:
+    container_name: "go_dev_app"
+    depends_on:
+      - db
     build:
       context: .
       dockerfile: app.Dockerfile
     ports:
       - 3000:3000
     volumes:
-      - ./:/go/src/github.com/patrickodacre/go-2
+      - ./:/go/src/github.com/patrickodacre/go-dev
+    command: CompileDaemon -log-prefix=false -polling=true -build="go build -o main ./cmd/main.go" -command="./main"
+  adminer:
+    container_name: "go_dev_db_admin"
+    image: adminer
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 8080:8080
+  db:
+    container_name: "go_dev_db"
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    networks:
+      - default
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "secret"
+      MYSQL_DATABASE: "go_dev"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "secret"
+      MYSQL_HOST: "go_dev_db"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+networks:
+  default:
+volumes:
+  mysql_data:
